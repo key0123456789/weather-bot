@@ -25,27 +25,27 @@ task :update_feed => :environment do
   min_per = 20
   if per06to12.to_i >= min_per || per12to18.to_i >= min_per || per18to24.to_i >= min_per
     word1 =
-      ["どんな　いちにちにする？",
-       "また　あさが　きた",
-       "おはよ",
-       "あさごはん",
-       "おきたね"].sample
+      ["どんな　いちにちにしよう？",
+       "また　あさだ。",
+       "おはよ。",
+       "さて　あさごはん。",
+       "おきたね。"].sample
     word2 =
-      ["がんばる",
-       "どうして　まいにち　がんばる？",
-       "とげとげ　したい　ひもある",
-       "みんな　いっしょ",
-       "きをつけてね"].sample
+      ["がんばる。",
+       "がんばれる？",
+       "まえむきに。",
+       "わらって。",
+       "きをつけてね。"].sample
     # 降水確率によってメッセージを変更する閾値の設定
     mid_per = 50
     if per06to12.to_i >= mid_per || per12to18.to_i >= mid_per || per18to24.to_i >= mid_per
-      word3 = "あめが　ふるらしい"
+      word3 = "あめが　ふるらしい。"
     else
-      word3 = "かさが　いるかも"
+      word3 = "かさが　いるかも。"
     end
     # 発信するメッセージの設定
     push =
-      "#{word1}\n#{word3}\nしょせん かくりつ\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\n#{word2}"
+      "#{word1}\n#{word3}\nしょせん かくりつ。\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\n#{word2}"
     # メッセージの発信先idを配列で渡す必要があるため、userテーブルよりpluck関数を使ってidを配列で取得
     user_ids = User.all.pluck(:line_id)
     message = {
