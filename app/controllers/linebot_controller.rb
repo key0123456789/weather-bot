@@ -83,7 +83,7 @@ class LinebotController < ApplicationController
           end
           # テキスト以外（画像等）のメッセージが送られた場合
         else
-          push = "うむ。"
+          push = "・・・"
         end
         message = {
           type: 'text',
