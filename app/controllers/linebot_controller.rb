@@ -9,6 +9,7 @@ class LinebotController < ApplicationController
 
   def callback
     body = request.body.read
+
     signature = request.env['HTTP_X_LINE_SIGNATURE']
     unless client.validate_signature(body, signature)
       error 400 do 'Bad Request' end
@@ -38,10 +39,10 @@ class LinebotController < ApplicationController
             per18to24 = doc.elements[xpath + 'info[2]/rainfallchance/period[4]'].text
             if per06to12.to_i >= min_per || per12to18.to_i >= min_per || per18to24.to_i >= min_per
               push =
-                "あしたはきっと\nめぐみの　あめだ。\nしょせん　かくりつ　だけど。\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\nぐっじょぶ"
+                "あしたは　あめらしい。\nしょせん　かくりつ。\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\nぐっじょぶ"
             else
               push =
-                "あしたはきっと\nはれるよ。\nうれしい？"
+                "あしたは　はれるらしい。\nうれしい？"
             end
           when /.*(明後日|あさって).*/
             per06to12 = doc.elements[xpath + 'info[3]/rainfallchance/period[2]l'].text
@@ -49,14 +50,14 @@ class LinebotController < ApplicationController
             per18to24 = doc.elements[xpath + 'info[3]/rainfallchance/period[4]l'].text
             if per06to12.to_i >= min_per || per12to18.to_i >= min_per || per18to24.to_i >= min_per
               push =
-                "あさってはきっと\nめぐみの　あめだ。\nしょせん　かくりつ。\nわかってる。"
+                "あさっては　あめらしい。\nしょせん　かくりつ。"
             else
               push =
-                "あさってはきっと\nはれるよ。\nうれしい？\nしょせん　かくりつ　でしょ。"
+                "あさっては　はれるらしい。\nうれしい？"
             end
           when /.*(かわいい|可愛い|カワイイ|きれい|綺麗|キレイ|素敵|ステキ|すてき|面白い|おもしろい|ありがと|すごい|スゴイ|スゴい|好き|頑張|がんば|ガンバ|良い|よい|うれしい|嬉|しあわせ|幸).*/
             push =
-              "まえむきな　ことばが\nまいにちを\nあかるくするってこと。"
+              "まえむきなことばが　まいにちを　あかるくするってこと。"
           when /.*(こんにちは|こんばんは|初めまして|はじめまして|おはよう|おはよ).*/
             push =
               "はいはい。"
@@ -66,19 +67,22 @@ class LinebotController < ApplicationController
             per18to24 = doc.elements[xpath + 'info/rainfallchance/period[4]l'].text
             if per06to12.to_i >= min_per || per12to18.to_i >= min_per || per18to24.to_i >= min_per
               word =
-                ["めぐみの　あめだ。",
-                 "あめだって　ふりたくて　ふってるんじゃ　ない。",
-                 "たまには　いいじゃん。"].sample
+                ["あめだって　ふりたくてふってるんじゃない。",
+                 "たまにはいいかんじ。",
+                 "いやん。",
+                 "みんな、めげないで。",
+                 "つい、めをそむけてしまいました。"].sample
               push =
-                "きょうはね。\nあめだね。\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\n#{word}"
+                "きょうは　あめらしい。\n　  6〜12じ　#{per06to12}％\n　12〜18じ　 #{per12to18}％\n　18〜24じ　#{per18to24}％\n#{word}"
             else
               word =
-                ["いいてんき。",
-                 "るんるん。",
-                 "うれしい？",
-                 "わらって。"].sample
+                ["いいてんきってこと。",
+                 "ちょっといいかんじかも。",
+                 "にやり。",
+                 "ぼくもちょっとがんばろう。",
+                 "ぼくはいいけど、みんなはどうかな？"].sample
               push =
-                "きょうはね。\nあめは　ふらないんだ。\n#{word}"
+                "きょうは　あめはふらないらしい。\n#{word}"
             end
           end
           # テキスト以外（画像等）のメッセージが送られた場合
